@@ -205,44 +205,102 @@ class InstallCommand extends Command
     {
         $tailwindConfigPath = base_path('tailwind.config.js');
 
+        // Get the actual package path dynamically
+        $packageViewsPath = $this->getPackageViewsPath();
+
         if (!File::exists($tailwindConfigPath)) {
             $this->warn('⚠️  tailwind.config.js not found. Please manually add the package views path.');
             $this->line('Add this to your content array:');
-            $this->line("  './vendor/vendor/ultimate-starter-kit/src/Views/**/*.blade.php',");
+            $this->line("  '{$packageViewsPath}',");
             return;
         }
 
         $configContent = File::get($tailwindConfigPath);
-        // Get the actual vendor path - this will be set when package is installed
-        $packagePath = "./vendor/*/*/src/Views/**/*.blade.php";
-        // For development, also include local src path
-        $localPath = "./src/Views/**/*.blade.php";
 
-        // Check if already added
-        if (Str::contains($configContent, 'src/Views') || Str::contains($configContent, 'vendor')) {
+        // Check if already added (check for the actual path or a pattern match)
+        if (Str::contains($configContent, $packageViewsPath) || 
+            Str::contains($configContent, 'engoreoo/ultimate-starter-kit') ||
+            Str::contains($configContent, 'ultimate-starter-kit/src/Views')) {
             $this->info('✅ Tailwind config already includes package views.');
             return;
         }
 
         // Try to add to content array
-        // Match content array pattern
-        if (preg_match('/content:\s*\[([^\]]*)\]/s', $configContent, $matches)) {
-            $contentArray = $matches[1];
-            $newContent = rtrim($contentArray);
-            if (!empty($newContent) && !Str::endsWith($newContent, ',')) {
-                $newContent .= ',';
+        // Match content array pattern - handle both JS and TS configs
+        $patterns = [
+            '/content:\s*\[([^\]]*)\]/s',  // JavaScript style
+            '/content:\s*\[([^\]]*)\]/s',   // TypeScript style
+        ];
+
+        $updated = false;
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $configContent, $matches)) {
+                $contentArray = $matches[1];
+                $newContent = rtrim($contentArray);
+                
+                // Add comma if needed
+                if (!empty($newContent) && !Str::endsWith(trim($newContent), ',')) {
+                    $newContent .= ',';
+                }
+                
+                // Add the package path with proper formatting
+                $newContent .= "\n        '{$packageViewsPath}',";
+                
+                // Replace the content array
+                $configContent = str_replace($matches[0], "content: [{$newContent}\n    ]", $configContent);
+                File::put($tailwindConfigPath, $configContent);
+                $this->info('✅ Tailwind config updated with package views path.');
+                $updated = true;
+                break;
             }
-            $newContent .= "\n        '{$packagePath}',";
-            $newContent .= "\n        '{$localPath}',";
-            $configContent = str_replace($matches[0], "content: [{$newContent}\n    ]", $configContent);
-            File::put($tailwindConfigPath, $configContent);
-            $this->info('✅ Tailwind config updated with package views path.');
-        } else {
-            $this->warn('⚠️  Could not automatically update tailwind.config.js.');
-            $this->line('Please manually add these to the content array:');
-            $this->line("  '{$packagePath}',");
-            $this->line("  '{$localPath}',");
         }
+
+        if (!$updated) {
+            $this->warn('⚠️  Could not automatically update tailwind.config.js.');
+            $this->line('Please manually add this to the content array:');
+            $this->line("  '{$packageViewsPath}',");
+        }
+    }
+
+    /**
+     * Get the dynamic path to package views.
+     */
+    protected function getPackageViewsPath(): string
+    {
+        // Get the package's src directory (where Commands folder is located)
+        // __DIR__ is: vendor/engoreoo/ultimate-starter-kit/src/Commands
+        // So we go up one level to get src directory
+        $packageSrcPath = realpath(__DIR__ . '/..');
+        
+        if (!$packageSrcPath) {
+            // Fallback if path resolution fails
+            return "./vendor/engoreoo/ultimate-starter-kit/src/Views/**/*.blade.php";
+        }
+        
+        // Get the project base path
+        $basePath = base_path();
+        
+        // Check if we're in a vendor directory (installed package)
+        if (str_contains($packageSrcPath, 'vendor')) {
+            // Extract the relative path from base_path to the src directory
+            $relativePath = str_replace($basePath . DIRECTORY_SEPARATOR, '', $packageSrcPath);
+            // Normalize path separators for Tailwind config (use forward slashes)
+            $relativePath = str_replace('\\', '/', $relativePath);
+            // Add Views path
+            return "./{$relativePath}/Views/**/*.blade.php";
+        }
+        
+        // For local development or if path doesn't contain vendor
+        // Calculate relative path from base_path
+        $relativePath = str_replace($basePath . DIRECTORY_SEPARATOR, '', $packageSrcPath);
+        $relativePath = str_replace('\\', '/', $relativePath);
+        
+        if ($relativePath && $relativePath !== $packageSrcPath) {
+            return "./{$relativePath}/Views/**/*.blade.php";
+        }
+        
+        // Final fallback: use Composer's vendor directory structure
+        return "./vendor/engoreoo/ultimate-starter-kit/src/Views/**/*.blade.php";
     }
 
     /**
