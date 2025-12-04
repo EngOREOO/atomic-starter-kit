@@ -7,7 +7,7 @@ A comprehensive Laravel package that provides rapid setup for Authentication, Dy
 ## Installation
 
 ```bash
-composer require your-vendor-name/ultimate-starter-kit
+composer require EngOREOO/ultimate-starter-kit
 php artisan ultimate:install
 npm install && npm run build
 ```
