@@ -1,6 +1,6 @@
 {
-    "name": "engoreoo/ultimate-starter-kit",
-    "description": "Laravel Ultimate Starter Kit - Rapid setup with Breeze, Dynamic ACL, and Admin Dashboard",
+    "name": "engoreoo/atomic-starter-kit",
+    "description": "Laravel atomic Starter Kit - Rapid setup with Breeze, Dynamic ACL, and Admin Dashboard",
     "type": "laravel-package",
     "license": "MIT",
     "keywords": [
@@ -22,10 +22,10 @@
             "homepage": "https://github.com/EngOREOO"
         }
     ],
-    "homepage": "https://github.com/EngOREOO/ultimate-starter-kit",
+    "homepage": "https://github.com/EngOREOO/atomic-starter-kit",
     "support": {
-        "issues": "https://github.com/EngOREOO/ultimate-starter-kit/issues",
-        "source": "https://github.com/EngOREOO/ultimate-starter-kit"
+        "issues": "https://github.com/EngOREOO/atomic-starter-kit/issues",
+        "source": "https://github.com/EngOREOO/atomic-starter-kit"
     },
     "require": {
         "php": "^8.2",
@@ -33,13 +33,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Vendor\\UltimateStarterKit\\": ""
+            "Vendor\\atomicStarterKit\\": ""
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Vendor\\UltimateStarterKit\\UltimateServiceProvider"
+                "Vendor\\atomicStarterKit\\atomicServiceProvider"
             ]
         }
     },
