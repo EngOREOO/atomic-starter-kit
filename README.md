@@ -23,7 +23,7 @@ Open your `composer.json` file and add the `repositories` section. Here's a comp
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/EngOREOO/ultimate-starter-kit.git"
+            "url": "https://github.com/EngOREOO/atomic-starter-kit.git"
         }
     ],
     "config": {
@@ -56,15 +56,8 @@ npm install && npm run build
 
 1. Make sure you've added the `repositories` section to your `composer.json` **before** running `composer require`.
 2. Clear Composer cache: `composer clear-cache`
-3. If the repository URL doesn't work, try the alternative:
-   ```json
-   "repositories": [
-       {
-           "type": "vcs",
-           "url": "https://github.com/EngOREOO/atomic-starter-kit.git"
-       }
-   ]
-   ```
+3. Make sure you're using the correct repository URL: `https://github.com/EngOREOO/atomic-starter-kit.git`
+   (Note: The GitHub repository is named `atomic-starter-kit`, but the package name is `ultimate-starter-kit`)
 4. Make sure you're using the correct package name: `engoreoo/ultimate-starter-kit` (all lowercase).
 
 **GitHub API Rate Limit**
