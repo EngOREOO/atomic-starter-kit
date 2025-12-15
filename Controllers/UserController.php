@@ -14,11 +14,20 @@ class UserController extends Controller
     /**
      * Display a listing of users.
      */
-    public function index()
+    public function index(Request $request)
     {
         $userModel = config('auth.providers.users.model', \App\Models\User::class);
-        $users = $userModel::with('roles')
-            ->paginate(15);
+        $query = $userModel::with('roles');
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->paginate(15);
 
         return view('ultimate::users.index', compact('users'));
     }

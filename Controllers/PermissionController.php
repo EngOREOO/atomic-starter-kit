@@ -11,9 +11,23 @@ class PermissionController extends Controller
     /**
      * Display a listing of permissions.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = Permission::orderBy('module')
+        $query = Permission::query();
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->has('module') && $request->module) {
+            $query->where('module', $request->module);
+        }
+
+        $permissions = $query->orderBy('module')
             ->orderBy('feature')
             ->orderBy('action')
             ->paginate(50);

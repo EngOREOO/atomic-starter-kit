@@ -6,12 +6,12 @@
 <div class="space-y-6 animate-slide-up">
     <!-- Toolbar -->
     <div class="flex flex-col md:flex-row justify-between gap-4 bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5">
-        <div class="flex gap-4 flex-1">
+        <form action="{{ route('admin.roles.index') }}" method="GET" class="flex gap-4 flex-1">
              <div class="relative w-full max-w-md">
-                <input type="text" placeholder="Search roles..." class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-800 dark:text-slate-200">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search roles..." class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-800 dark:text-slate-200">
                 <i data-lucide="search" class="w-5 h-5 absolute left-3 top-3.5 text-slate-400"></i>
             </div>
-        </div>
+        </form>
 
         <a href="{{ route('admin.roles.create') }}" class="px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/30 hover:bg-indigo-700 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all flex items-center gap-2">
             <i data-lucide="shield-plus" class="w-5 h-5"></i>

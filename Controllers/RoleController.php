@@ -12,9 +12,17 @@ class RoleController extends Controller
     /**
      * Display a listing of roles.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::with('permissions')->paginate(15);
+        $query = Role::with('permissions');
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        }
+
+        $roles = $query->paginate(15);
         return view('ultimate::roles.index', compact('roles'));
     }
 
