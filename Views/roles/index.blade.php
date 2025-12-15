@@ -3,68 +3,72 @@
 @section('title', 'Roles')
 
 @section('content')
-<div class="px-4 lg:px-6">
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-semibold">Roles</h2>
-        <a 
-            href="{{ route('admin.roles.create') }}" 
-            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2"
-            data-slot="button"
-        >
-            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
-            Create Role
+<div class="space-y-6 animate-slide-up">
+    <!-- Toolbar -->
+    <div class="flex flex-col md:flex-row justify-between gap-4 bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5">
+        <div class="flex gap-4 flex-1">
+             <div class="relative w-full max-w-md">
+                <input type="text" placeholder="Search roles..." class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-800 dark:text-slate-200">
+                <i data-lucide="search" class="w-5 h-5 absolute left-3 top-3.5 text-slate-400"></i>
+            </div>
+        </div>
+
+        <a href="{{ route('admin.roles.create') }}" class="px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/30 hover:bg-indigo-700 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+            <i data-lucide="shield-plus" class="w-5 h-5"></i>
+            Add Role
         </a>
     </div>
 
-    <div class="overflow-hidden rounded-lg border">
-        <div class="relative w-full overflow-x-auto" data-slot="table-container">
-            <table class="w-full caption-bottom text-sm" data-slot="table">
-                <thead class="[&_tr]:border-b bg-muted" data-slot="table-header">
-                    <tr class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors" data-slot="table-row">
-                        <th class="text-foreground h-10 px-4 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-head">Name</th>
-                        <th class="text-foreground h-10 px-4 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-head">Description</th>
-                        <th class="text-foreground h-10 px-4 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-head">Permissions</th>
-                        <th class="text-foreground h-10 px-4 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-head">Actions</th>
+    <!-- Roles Table Card -->
+    <div class="bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-gray-200 dark:border-white/5">
+                        <th class="py-4 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Role Name</th>
+                        <th class="py-4 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Permissions</th>
+                        <th class="py-4 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="[&_tr:last-child]:border-0" data-slot="table-body">
+                <tbody class="text-sm">
                     @foreach($roles as $role)
-                    <tr class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors" data-slot="table-row">
-                        <td class="p-4 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-cell">
-                            <div class="font-medium">{{ $role->name }}</div>
+                    <tr class="group hover:bg-indigo-50/50 dark:hover:bg-white/5 transition-colors border-b border-gray-100 dark:border-white/5">
+                        <td class="py-4 px-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/20">
+                                    <i data-lucide="shield" class="w-5 h-5"></i>
+                                </div>
+                                <span class="font-semibold text-slate-800 dark:text-white">{{ $role->name }}</span>
+                            </div>
                         </td>
-                        <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-cell">
-                            <div class="text-muted-foreground">{{ $role->description ?? '-' }}</div>
+                        <td class="py-4 px-4">
+                            <div class="flex flex-wrap gap-1">
+                                @forelse($role->permissions->take(5) as $permission)
+                                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600">
+                                        {{ $permission->name }}
+                                    </span>
+                                @empty
+                                    <span class="text-slate-400 italic text-xs">No permissions</span>
+                                @endforelse
+                                @if($role->permissions->count() > 5)
+                                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-white/5 text-gray-500 border border-gray-200 dark:border-white/10">
+                                        +{{ $role->permissions->count() - 5 }} more
+                                    </span>
+                                @endif
+                            </div>
                         </td>
-                        <td class="p-4 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-cell">
-                            <span class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0">
-                                {{ $role->permissions->count() }} permissions
-                            </span>
-                        </td>
-                        <td class="p-4 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-cell">
-                            <div class="flex items-center gap-2">
-                                <a 
-                                    href="{{ route('admin.roles.edit', $role->id) }}" 
-                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 h-8 px-3 text-muted-foreground"
-                                    data-slot="button"
-                                >
-                                    Edit
+                        <td class="py-4 px-4 text-right">
+                            <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <a href="{{ route('admin.roles.edit', $role->id) }}" class="p-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-500/20 text-slate-400 hover:text-indigo-600 transition-colors" title="Edit">
+                                    <i data-lucide="edit-3" class="w-4 h-4"></i>
                                 </a>
-                                @if(!$role->is_super_admin)
-                                <form method="POST" action="{{ route('admin.roles.destroy', $role->id) }}" class="inline" onsubmit="return confirm('Are you sure you want to delete this role?')">
+                                <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" onsubmit="return confirm('Are you sure?');" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button 
-                                        type="submit" 
-                                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 h-8 px-3 text-destructive"
-                                        data-slot="button"
-                                    >
-                                        Delete
+                                    <button type="submit" class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/20 text-slate-400 hover:text-red-600 transition-colors" title="Delete">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
                                 </form>
-                                @endif
                             </div>
                         </td>
                     </tr>
@@ -73,43 +77,9 @@
             </table>
         </div>
         
-        <div class="flex items-center justify-between px-4 py-4">
-            <div class="text-muted-foreground hidden flex-1 text-sm lg:flex">
-                Showing {{ $roles->firstItem() ?? 0 }} to {{ $roles->lastItem() ?? 0 }} of {{ $roles->total() }} results
-            </div>
-            <div class="flex w-full items-center gap-8 lg:w-fit">
-                <div class="flex w-fit items-center justify-center text-sm font-medium">
-                    Page {{ $roles->currentPage() }} of {{ $roles->lastPage() }}
-                </div>
-                <div class="ml-auto flex items-center gap-2 lg:ml-0">
-                    @if($roles->onFirstPage())
-                        <button class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 p-0 transition-colors disabled:pointer-events-none disabled:opacity-50" disabled data-slot="button">
-                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                        </button>
-                    @else
-                        <a href="{{ $roles->previousPageUrl() }}" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 p-0 transition-colors" data-slot="button">
-                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                        </a>
-                    @endif
-                    @if($roles->hasMorePages())
-                        <a href="{{ $roles->nextPageUrl() }}" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 p-0 transition-colors" data-slot="button">
-                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
-                    @else
-                        <button class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 p-0 transition-colors disabled:pointer-events-none disabled:opacity-50" disabled data-slot="button">
-                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </button>
-                    @endif
-                </div>
-            </div>
+        <!-- Pagination -->
+        <div class="mt-6">
+            {{ $roles->links() }}
         </div>
     </div>
 </div>
