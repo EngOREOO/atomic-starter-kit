@@ -4,115 +4,171 @@ A comprehensive Laravel package that provides rapid setup for Authentication, Dy
 
 **Created by [Ahmed Hany](https://github.com/EngOREOO/)**
 
-## Installation
+## ✨ Features
+
+- **🚀 One-Command Installation**: Setup your entire admin panel in minutes.
+- **🔐 Integrated Authentication**: Built-in, fully customizable authentication system (Login, Register, Password Reset) replacing the need for external Breeze installation.
+- **👥 Dynamic Role & Permission System**: Granular access control with a database-driven permission system.
+- **🎨 Modern Admin Dashboard**: Sleek, glassmorphism-inspired UI built with Tailwind CSS.
+- **🔑 Super Admin System**: Dedicated Super Admin role with global access.
+- **📊 User Management**: Complete user CRUD operations.
+- **🛡️ Permission Middleware**: Protect routes easily using `ultimate.permission`.
+- **⚙️ Settings Management**: Built-in settings configuration.
+- **🔍 Auto-Route Scanning**: Automatically detects routes and generates permissions.
+
+---
+
+## 📦 Installation
 
 ### Step 1: Add Repository Configuration
 
-**IMPORTANT:** This package is not yet published to Packagist. You must add the repository configuration to your `composer.json` file **BEFORE** running `composer require`.
-
-Open your `composer.json` file and add the `repositories` section. Here's a complete example:
+**IMPORTANT:** Since this package is hosted on GitHub, you need to tell Composer where to find it. Add the following to your project's `composer.json` file in the `repositories` array:
 
 ```json
-{
-    "name": "laravel/laravel",
-    "type": "project",
-    "require": {
-        "php": "^8.2",
-        "laravel/framework": "^12.0"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/EngOREOO/atomic-starter-kit.git"
-        }
-    ],
-    "config": {
-        "preferred-install": "dist",
-        "sort-packages": true
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/EngOREOO/atomic-starter-kit.git"
     }
-}
+],
 ```
 
-**Note:** Add the `repositories` section at the same level as `require`, `require-dev`, etc.
+### Step 2: Require the Package
 
-### Step 2: Install the Package
-
-After adding the repository configuration, run:
+Run the following command in your terminal:
 
 ```bash
 composer require engoreoo/ultimate-starter-kit
-php artisan ultimate:install
-npm install && npm run build
 ```
 
-**Important Notes:**
-- The package name is **case-sensitive**. Use `engoreoo/ultimate-starter-kit` (all lowercase).
-- You must add the repository configuration **before** running `composer require`.
-- If you get a "Could not find a matching version" error, make sure you've added the repository configuration correctly.
+### Step 3: Install & Setup
 
-### Troubleshooting
+Run the installation command to set up the database, publish assets, and configure the system:
 
-**Error: "Could not find a matching version"**
+```bash
+php artisan ultimate:install
+```
 
-1. Make sure you've added the `repositories` section to your `composer.json` **before** running `composer require`.
-2. Clear Composer cache: `composer clear-cache`
-3. Make sure you're using the correct repository URL: `https://github.com/EngOREOO/atomic-starter-kit.git`
-   (Note: The GitHub repository is named `atomic-starter-kit`, but the package name is `ultimate-starter-kit`)
-4. Make sure you're using the correct package name: `engoreoo/ultimate-starter-kit` (all lowercase).
+_Follow the interactive prompts to set up your Super Admin account._
 
-**GitHub API Rate Limit**
+### Step 4: Frontend Development
 
-If you see a "GitHub API limit (60 calls/hr) is exhausted" error:
+Install dependencies and start the development server to compile the Tailwind CSS styles:
 
-**Option 1: Create a GitHub Token (Recommended)**
+```bash
+npm install
+npm run dev
+```
 
-1. Go to https://github.com/settings/tokens/new
-2. Give it a name like "Composer"
-3. **Don't select any scopes** (for public repos, no permissions needed)
-4. Click "Generate token"
-5. Copy the token
-6. Run this command and paste your token when prompted:
-   ```bash
-   composer config --global github-oauth.github.com YOUR_TOKEN_HERE
-   ```
-   Or manually add it to `C:/Users/YourUsername/AppData/Roaming/Composer/auth.json`:
-   ```json
-   {
-       "github-oauth": {
-           "github.com": "YOUR_TOKEN_HERE"
-       }
-   }
-   ```
+---
 
-**Option 2: Wait**
+## 🔧 Configuration
 
-Simply wait for the rate limit to reset (usually 1 hour). The error message will show when it resets.
+The package configuration file is located at `config/ultimate.php`.
 
-**Note:** Publishing to Packagist will eliminate this issue entirely.
+```php
+return [
+    // The role name for the super admin who has all permissions
+    'super_admin_role' => 'Super Admin',
 
-## Features
+    // The URI prefix for all admin routes (e.g., yoursite.com/admin/dashboard)
+    'route_prefix' => 'admin',
 
-- 🚀 One-Command Installation
-- 🔐 Laravel Breeze Integration
-- 👥 Dynamic Role & Permission System
-- 🎨 Modern Admin Dashboard
-- 🔑 Super Admin System
-- 📊 User Management
-- 🛡️ Permission Middleware
-- ⚙️ Settings Management
+    // The middleware group to apply to admin routes
+    'middleware_group' => 'web',
 
-## Documentation
+    // Whether to automatically scan routes for permissions after installation
+    'scan_on_install' => true,
+];
+```
 
-See [INSTALLATION.md](INSTALLATION.md) for detailed installation instructions.
+---
+
+## 🔐 Authentication & Customization
+
+This package comes with its own authentication controllers and views, giving you full control over the login flow without relying on third-party scaffolding like Laravel Breeze.
+
+### Views
+
+All authentication views are located in `vendor/ultimate/auth`. To customize them, you can publish the views to your main `resources/views` directory:
+
+```bash
+php artisan vendor:publish --tag=ultimate-views
+```
+
+This will copy all package views to `resources/views/vendor/ultimate`. You can then edit files like:
+
+- `resources/views/vendor/ultimate/auth/login.blade.php`
+- `resources/views/vendor/ultimate/layouts/guest.blade.php` (The layout used for auth pages)
+
+### Routes
+
+Authentication routes are automatically registered with the prefix defined in your config (default: `/admin`).
+
+- Login: `/admin/login`
+- Register: `/admin/register`
+- Dashboard: `/admin/dashboard`
+
+---
+
+## 🛡️ Usage
+
+### Protecting Routes
+
+To protect your own routes using the dynamic permission system, use the `ultimate.permission` middleware. The middleware automatically checks if the user has permission to access the route based on the route name (e.g., `admin.posts.create`).
+
+```php
+Route::middleware(['auth', 'ultimate.permission'])->group(function () {
+    Route::resource('posts', PostController::class);
+});
+```
+
+### Route Scanning
+
+Whenever you add new routes that you want to be controlled by permissions, run the scan command:
+
+```bash
+php artisan ultimate:scan-routes
+```
+
+This will detect new routes and add them to the permissions table in your database.
+
+---
+
+## 🛠️ Available Commands
+
+| Command                            | Description                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| `php artisan ultimate:install`     | Installs the package, runs migrations, and creates the Super Admin.      |
+| `php artisan ultimate:scan-routes` | Scans your application routes and syncs them with the permissions table. |
+
+---
+
+## 📋 Troubleshooting
+
+**"Could not find a matching version"**
+
+- Ensure you added the `repositories` block to your `composer.json` correctly.
+- Run `composer clear-cache`.
+
+**"GitHub API limit exhausted"**
+
+- Use a personal access token with Composer: `composer config --global github-oauth.github.com <YOUR_TOKEN>`
+
+**Styles look broken**
+
+- Ensure you are running `npm run dev` or have run `npm run build`.
+- Verify that `ultimate-starter-kit` views are being scanned by Tailwind (this is handled automatically during install, but check `tailwind.config.js` if issues persist).
+
+---
 
 ## Author
 
-**Ahmed Hany** - Backend Web Developer
+**Ahmed Hany**
 
 - 🌐 **GitHub**: [@EngOREOO](https://github.com/EngOREOO/)
-- 💼 **LinkedIn**: [Ahmed Hany](https://www.linkedin.com/in/codebyoreoo/)
 - 📧 **Email**: engoreoo@gmail.com
 
 ## License
 
-MIT
+The MIT License (MIT).
