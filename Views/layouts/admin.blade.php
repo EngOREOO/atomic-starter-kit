@@ -73,7 +73,7 @@
         }
     </style>
 </head>
-<body class="bg-light-bg dark:bg-dark-bg text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex overflow-x-hidden bg-[radial-gradient(circle_at_10%_20%,rgba(79,70,229,0.15)_0%,transparent_40%),radial-gradient(circle_at_90%_80%,rgba(16,185,129,0.1)_0%,transparent_40%)]">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex overflow-x-hidden bg-[radial-gradient(circle_at_10%_20%,rgba(79,70,229,0.15)_0%,transparent_40%),radial-gradient(circle_at_90%_80%,rgba(16,185,129,0.1)_0%,transparent_40%)]">
 
     <!-- Sidebar -->
     <nav class="fixed left-0 top-0 h-full w-[280px] bg-white/70 dark:bg-slate-900/60 glass border-r border-gray-200 dark:border-white/5 p-6 flex flex-col z-50 transition-transform duration-300 -translate-x-full md:translate-x-0" id="sidebar">
