@@ -42,11 +42,6 @@ class UltimateServiceProvider extends ServiceProvider
             __DIR__.'/Views' => resource_path('views/vendor/ultimate'),
         ], 'ultimate-views');
 
-        // Publish seeders
-        $this->publishes([
-            __DIR__.'/Database/Seeders' => database_path('seeders'),
-        ], 'ultimate-seeders');
-
         // Load views
         $this->loadViewsFrom(__DIR__.'/Views', 'ultimate');
 
