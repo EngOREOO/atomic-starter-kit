@@ -27,6 +27,14 @@ class RoleController extends Controller
     }
 
     /**
+     * Display the specified role.
+     */
+    public function show($id)
+    {
+        return redirect()->route('admin.roles.edit', $id);
+    }
+
+    /**
      * Show the form for creating a new role.
      */
     public function create()

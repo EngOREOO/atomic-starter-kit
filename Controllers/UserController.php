@@ -18,7 +18,6 @@ class UserController extends Controller
     {
         $userModel = config('auth.providers.users.model', \App\Models\User::class);
         $query = $userModel::with('roles');
-
         if ($request->has('search')) {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
@@ -30,6 +29,14 @@ class UserController extends Controller
         $users = $query->paginate(15);
 
         return view('ultimate::users.index', compact('users'));
+    }
+
+    /**
+     * Display the specified user.
+     */
+    public function show($id)
+    {
+        return redirect()->route('admin.users.edit', $id);
     }
 
     /**
