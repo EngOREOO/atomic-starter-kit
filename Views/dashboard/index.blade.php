@@ -3,304 +3,121 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<!-- Stats Cards -->
-<div class="grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-    <!-- Total Users Card -->
-    <div 
-        data-slot="card"
-        class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm @container/card"
-    >
-        <div 
-            data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto]"
-        >
-            <div data-slot="card-description" class="text-muted-foreground text-sm">Total Users</div>
-            <div data-slot="card-title" class="leading-none font-semibold text-2xl tabular-nums @[250px]/card:text-3xl">
-                {{ \App\Models\User::count() }}
-            </div>
-            <div 
-                data-slot="card-action"
-                class="col-start-2 row-span-2 row-start-1 self-start justify-self-end"
-            >
-                <span class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 gap-1">
-                    <svg class="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                    </svg>
-                    Active
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <!-- Card 1 -->
+        <div class="relative overflow-hidden bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5 flex flex-col justify-between h-[180px] hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10 hover:border-indigo-500/30 transition-all group animate-fade-in [animation-delay:0.1s]">
+            <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            <div class="flex justify-between items-start z-10">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center bg-indigo-50 dark:bg-white/5 border border-indigo-100 dark:border-white/5 shadow-inner">
+                    <i data-lucide="users" class="w-6 h-6 text-indigo-500 dark:text-indigo-400"></i>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100/50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 flex items-center gap-1">
+                    <i data-lucide="activity" class="w-3 h-3"></i> Active
                 </span>
             </div>
-        </div>
-        <div 
-            data-slot="card-footer"
-            class="flex items-center px-6"
-        >
-            <div class="flex flex-col items-start gap-1.5 text-sm">
-                <div class="line-clamp-1 flex gap-2 font-medium">
-                    All registered users
-                </div>
-                <div class="text-muted-foreground">
-                    Manage users from Users section
-                </div>
+            <div class="z-10">
+                <div class="text-5xl font-bold bg-gradient-to-r from-slate-700 to-slate-400 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">{{ \App\Models\User::count() }}</div>
+                <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">Registered Users</div>
             </div>
         </div>
-    </div>
 
-    <!-- Total Roles Card -->
-    <div 
-        data-slot="card"
-        class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm @container/card"
-    >
-        <div 
-            data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto]"
-        >
-            <div data-slot="card-description" class="text-muted-foreground text-sm">Total Roles</div>
-            <div data-slot="card-title" class="leading-none font-semibold text-2xl tabular-nums @[250px]/card:text-3xl">
-                {{ \Vendor\UltimateStarterKit\Models\Role::count() }}
-            </div>
-            <div 
-                data-slot="card-action"
-                class="col-start-2 row-span-2 row-start-1 self-start justify-self-end"
-            >
-                <span class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 gap-1">
-                    <svg class="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                    </svg>
-                    Secure
+        <!-- Card 2 -->
+        <div class="relative overflow-hidden bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5 flex flex-col justify-between h-[180px] hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 hover:border-amber-500/30 transition-all group animate-fade-in [animation-delay:0.2s]">
+            <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            <div class="flex justify-between items-start z-10">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center bg-amber-50 dark:bg-white/5 border border-amber-100 dark:border-white/5 shadow-inner">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-amber-500 dark:text-amber-400"></i>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100/50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20 flex items-center gap-1">
+                    <i data-lucide="check" class="w-3 h-3"></i> Secure
                 </span>
             </div>
-        </div>
-        <div 
-            data-slot="card-footer"
-            class="flex items-center px-6"
-        >
-            <div class="flex flex-col items-start gap-1.5 text-sm">
-                <div class="line-clamp-1 flex gap-2 font-medium">
-                    Role-based access control
-                </div>
-                <div class="text-muted-foreground">
-                    Configure roles and permissions
-                </div>
+            <div class="z-10">
+                <div class="text-5xl font-bold bg-gradient-to-r from-slate-700 to-slate-400 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">{{ \Vendor\UltimateStarterKit\Models\Role::count() }}</div>
+                <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">Total Roles</div>
             </div>
         </div>
-    </div>
 
-    <!-- Total Permissions Card -->
-    <div 
-        data-slot="card"
-        class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm @container/card"
-    >
-        <div 
-            data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto]"
-        >
-            <div data-slot="card-description" class="text-muted-foreground text-sm">Total Permissions</div>
-            <div data-slot="card-title" class="leading-none font-semibold text-2xl tabular-nums @[250px]/card:text-3xl">
-                {{ \Vendor\UltimateStarterKit\Models\Permission::count() }}
-            </div>
-            <div 
-                data-slot="card-action"
-                class="col-start-2 row-span-2 row-start-1 self-start justify-self-end"
-            >
-                <span class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 gap-1">
-                    <svg class="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                    </svg>
-                    Protected
+        <!-- Card 3 -->
+        <div class="relative overflow-hidden bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5 flex flex-col justify-between h-[180px] hover:-translate-y-1 hover:shadow-xl hover:shadow-red-500/10 hover:border-red-500/30 transition-all group animate-fade-in [animation-delay:0.3s]">
+            <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            <div class="flex justify-between items-start z-10">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center bg-red-50 dark:bg-white/5 border border-red-100 dark:border-white/5 shadow-inner">
+                    <i data-lucide="key" class="w-6 h-6 text-red-500 dark:text-red-400"></i>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100/50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20 flex items-center gap-1">
+                    <i data-lucide="lock" class="w-3 h-3"></i> Protected
                 </span>
             </div>
-        </div>
-        <div 
-            data-slot="card-footer"
-            class="flex items-center px-6"
-        >
-            <div class="flex flex-col items-start gap-1.5 text-sm">
-                <div class="line-clamp-1 flex gap-2 font-medium">
-                    Fine-grained access control
-                </div>
-                <div class="text-muted-foreground">
-                    View all permissions
-                </div>
+            <div class="z-10">
+                <div class="text-5xl font-bold bg-gradient-to-r from-slate-700 to-slate-400 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">{{ \Vendor\UltimateStarterKit\Models\Permission::count() }}</div>
+                <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">Total Permissions</div>
             </div>
         </div>
-    </div>
 
-    <!-- Active Sessions Card -->
-    <div 
-        data-slot="card"
-        class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm @container/card"
-    >
-        <div 
-            data-slot="card-header"
-            class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto]"
-        >
-            <div data-slot="card-description" class="text-muted-foreground text-sm">Active Sessions</div>
-            <div data-slot="card-title" class="leading-none font-semibold text-2xl tabular-nums @[250px]/card:text-3xl">
-                1
-            </div>
-            <div 
-                data-slot="card-action"
-                class="col-start-2 row-span-2 row-start-1 self-start justify-self-end"
-            >
-                <span class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 gap-1">
-                    <svg class="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    Online
+         <!-- Card 4 -->
+         <div class="relative overflow-hidden bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5 flex flex-col justify-between h-[180px] hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10 hover:border-emerald-500/30 transition-all group animate-fade-in [animation-delay:0.4s]">
+            <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            <div class="flex justify-between items-start z-10">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center bg-emerald-50 dark:bg-white/5 border border-emerald-100 dark:border-white/5 shadow-inner">
+                    <i data-lucide="monitor" class="w-6 h-6 text-emerald-500 dark:text-emerald-400"></i>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100/50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 flex items-center gap-1">
+                    <i data-lucide="wifi" class="w-3 h-3"></i> Online
                 </span>
             </div>
-        </div>
-        <div 
-            data-slot="card-footer"
-            class="flex items-center px-6"
-        >
-            <div class="flex flex-col items-start gap-1.5 text-sm">
-                <div class="line-clamp-1 flex gap-2 font-medium">
-                    You are currently logged in
-                </div>
-                <div class="text-muted-foreground">
-                    Session management
-                </div>
+            <div class="z-10">
+                <div class="text-5xl font-bold bg-gradient-to-r from-slate-700 to-slate-400 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">1</div>
+                <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">Active Sessions</div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Quick Actions -->
-<div class="px-4 lg:px-6 mt-6">
-    <div 
-        data-slot="card"
-        class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm"
-    >
-        <div 
-            data-slot="card-header"
-            class="px-6"
-        >
-            <div data-slot="card-title" class="leading-none font-semibold text-xl">Quick Actions</div>
-            <div data-slot="card-description" class="text-muted-foreground text-sm mt-1">
-                Common tasks and shortcuts
+    <!-- Bottom Sections -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in [animation-delay:0.5s]">
+        <!-- Quick Actions -->
+        <div class="lg:col-span-2 bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-200 dark:border-white/5 pb-4">
+                <h3 class="text-xl font-semibold dark:text-slate-200">Quick Actions</h3>
+                <i data-lucide="zap" class="text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]"></i>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <a href="{{ route('admin.users.create') }}" class="flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-black/5 dark:bg-white/5 border border-dashed border-gray-300 dark:border-white/10 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:scale-[1.02] transition-all group">
+                    <i data-lucide="user-plus" class="w-8 h-8 text-indigo-500 dark:text-indigo-400 group-hover:rotate-6 transition-transform drop-shadow-md"></i>
+                    <span class="font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">Create User</span>
+                </a>
+                <a href="{{ route('admin.roles.create') }}" class="flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-black/5 dark:bg-white/5 border border-dashed border-gray-300 dark:border-white/10 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:scale-[1.02] transition-all group">
+                    <i data-lucide="shield-plus" class="w-8 h-8 text-indigo-500 dark:text-indigo-400 group-hover:rotate-6 transition-transform drop-shadow-md"></i>
+                    <span class="font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">Add Role</span>
+                </a>
+                <button class="flex flex-col items-center justify-center gap-3 p-8 rounded-2xl bg-black/5 dark:bg-white/5 border border-dashed border-gray-300 dark:border-white/10 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:scale-[1.02] transition-all group">
+                    <i data-lucide="file-text" class="w-8 h-8 text-indigo-500 dark:text-indigo-400 group-hover:rotate-6 transition-transform drop-shadow-md"></i>
+                    <span class="font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">View Logs</span>
+                </button>
             </div>
         </div>
-        <div 
-            data-slot="card-content"
-            class="px-6"
-        >
-            <div class="grid grid-cols-1 gap-4 @md/main:grid-cols-2 @lg/main:grid-cols-4">
-                @if(method_exists(auth()->user(), 'hasPermission') && (auth()->user()->hasPermission('admin.users.create') || auth()->user()->isSuperAdmin()))
-                <a 
-                    href="{{ route('admin.users.create') }}" 
-                    class="flex items-center gap-3 p-4 rounded-lg border hover:bg-accent hover:text-accent-foreground transition-colors"
-                >
-                    <div class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <svg class="size-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="font-medium">Create User</div>
-                        <div class="text-sm text-muted-foreground">Add a new user</div>
-                    </div>
-                </a>
-                @endif
 
-                @if(method_exists(auth()->user(), 'hasPermission') && (auth()->user()->hasPermission('admin.roles.create') || auth()->user()->isSuperAdmin()))
-                <a 
-                    href="{{ route('admin.roles.create') }}" 
-                    class="flex items-center gap-3 p-4 rounded-lg border hover:bg-accent hover:text-accent-foreground transition-colors"
-                >
-                    <div class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <svg class="size-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="font-medium">Create Role</div>
-                        <div class="text-sm text-muted-foreground">Define a new role</div>
-                    </div>
-                </a>
-                @endif
-
-                <a 
-                    href="{{ route('admin.profile.edit') }}" 
-                    class="flex items-center gap-3 p-4 rounded-lg border hover:bg-accent hover:text-accent-foreground transition-colors"
-                >
-                    <div class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <svg class="size-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="font-medium">Edit Profile</div>
-                        <div class="text-sm text-muted-foreground">Update your information</div>
-                    </div>
-                </a>
-
-                <a 
-                    href="{{ route('admin.settings.index') }}" 
-                    class="flex items-center gap-3 p-4 rounded-lg border hover:bg-accent hover:text-accent-foreground transition-colors"
-                >
-                    <div class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <svg class="size-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="font-medium">Settings</div>
-                        <div class="text-sm text-muted-foreground">Configure application</div>
-                    </div>
-                </a>
+        <!-- Recent Sessions -->
+        <div class="bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-200 dark:border-white/5 pb-4">
+                <h3 class="text-xl font-semibold dark:text-slate-200">Current Session</h3>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Recent Activity -->
-<div class="px-4 lg:px-6 mt-6">
-    <div 
-        data-slot="card"
-        class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm"
-    >
-        <div 
-            data-slot="card-header"
-            class="px-6"
-        >
-            <div data-slot="card-title" class="leading-none font-semibold text-xl">Recent Activity</div>
-            <div data-slot="card-description" class="text-muted-foreground text-sm mt-1">
-                Latest system events and updates
-            </div>
-        </div>
-        <div 
-            data-slot="card-content"
-            class="px-6"
-        >
-            <div class="space-y-4">
-                <div class="flex items-start gap-4 p-4 rounded-lg border">
-                    <div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <svg class="size-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                        </svg>
+            <div class="flex items-center justify-between py-3 border-b border-gray-200 dark:border-white/5 mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl bg-black/5 dark:bg-white/5 text-slate-500 dark:text-slate-400">
+                        <i data-lucide="chrome" class="w-5 h-5"></i>
                     </div>
-                    <div class="flex-1">
-                        <div class="font-medium">System Initialized</div>
-                        <div class="text-sm text-muted-foreground">Ultimate Starter Kit has been successfully installed and configured.</div>
-                        <div class="text-xs text-muted-foreground mt-1">{{ now()->format('M d, Y') }}</div>
+                    <div>
+                        <div class="font-semibold text-sm dark:text-slate-200">Chrome on Windows</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">192.168.1.1</div>
                     </div>
                 </div>
-                <div class="flex items-start gap-4 p-4 rounded-lg border">
-                    <div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <svg class="size-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <div class="font-medium">User Management Ready</div>
-                        <div class="text-sm text-muted-foreground">You can now manage users, roles, and permissions from the admin panel.</div>
-                        <div class="text-xs text-muted-foreground mt-1">{{ now()->subDays(1)->format('M d, Y') }}</div>
-                    </div>
-                </div>
+                <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse-glow"></div>
             </div>
+            <button class="w-full py-3 rounded-xl bg-black/5 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:bg-black/10 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white transition-all font-medium text-sm">
+                Manage All Sessions
+            </button>
         </div>
     </div>
-</div>
 @endsection

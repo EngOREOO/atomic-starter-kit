@@ -1,436 +1,269 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard') - {{ config('app.name', 'Laravel') }}</title>
-    
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Scripts & Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <script>
+        // Tailwind Config for colors/fonts if not in tailwind.config.js yet 
+        // (Ideally this should move to tailwind.config.js, but keeping here for now as requested)
+        tailwind = {
+            config: {
+                darkMode: 'class',
+                theme: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    extend: {
+                        colors: {
+                            dark: {
+                                bg: '#0f172a',
+                                card: 'rgba(30, 41, 59, 0.7)',
+                                hover: 'rgba(51, 65, 85, 0.8)'
+                            },
+                            light: {
+                                bg: '#F1F5F9',
+                                card: 'rgba(255, 255, 255, 0.8)',
+                                hover: '#ffffff'
+                            },
+                            primary: {
+                                DEFAULT: '#818cf8',
+                                dark: '#4F46E5',
+                                glow: 'rgba(129, 140, 248, 0.3)'
+                            }
+                        },
+                        animation: {
+                            'fade-in': 'fadeIn 0.6s ease-out forwards',
+                            'pulse-glow': 'pulseGlow 2s infinite',
+                        },
+                        keyframes: {
+                            fadeIn: {
+                                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                                '100%': { opacity: '1', transform: 'translateY(0)' },
+                            },
+                            pulseGlow: {
+                                '0%': { boxShadow: '0 0 0 0 rgba(52, 211, 153, 0.4)' },
+                                '70%': { boxShadow: '0 0 0 6px rgba(52, 211, 153, 0)' },
+                                '100%': { boxShadow: '0 0 0 0 rgba(52, 211, 153, 0)' },
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #4F46E5; border-radius: 10px; }
+
+        /* Glass Utilities */
+        .glass {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
 </head>
-<body class="h-full font-sans antialiased text-gray-900 bg-gray-50">
-    <div 
-        class="group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full"
-        data-slot="sidebar-wrapper"
-        style="--sidebar-width: 16rem; --sidebar-width-icon: 3rem;"
-    >
-        <!-- Sidebar -->
-        <aside 
-            class="group peer text-sidebar-foreground hidden md:block"
-            data-state="expanded"
-            data-collapsible=""
-            data-variant="inset"
-            data-side="left"
-            data-slot="sidebar"
-        >
-            <!-- Sidebar Gap -->
-            <div
-                data-slot="sidebar-gap"
-                class="relative w-[var(--sidebar-width)] bg-transparent transition-[width] duration-200 ease-linear group-data-[collapsible=offcanvas]:w-0 group-data-[side=right]:rotate-180 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+1rem)]"
-            ></div>
+<body class="bg-light-bg dark:bg-dark-bg text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex overflow-x-hidden bg-[radial-gradient(circle_at_10%_20%,rgba(79,70,229,0.15)_0%,transparent_40%),radial-gradient(circle_at_90%_80%,rgba(16,185,129,0.1)_0%,transparent_40%)]">
+
+    <!-- Sidebar -->
+    <nav class="fixed left-0 top-0 h-full w-[280px] bg-white/70 dark:bg-slate-900/60 glass border-r border-gray-200 dark:border-white/5 p-6 flex flex-col z-50 transition-transform duration-300 -translate-x-full md:translate-x-0" id="sidebar">
+        <!-- Logo -->
+        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 mb-10 text-2xl font-bold dark:text-white drop-shadow-[0_0_15px_rgba(129,140,248,0.3)]">
+            <div class="p-2 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-500 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)]">
+                <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+            </div>
+            <span>StarterKit</span>
+        </a>
+
+        <!-- Menu Group 1 -->
+        <div class="mb-8">
+            <div class="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400 font-bold mb-4 pl-3">Main Menu</div>
             
-            <!-- Sidebar Container -->
-            <div
-                data-slot="sidebar-container"
-                class="fixed inset-y-0 z-10 hidden h-svh w-[var(--sidebar-width)] transition-[left,right,width] duration-200 ease-linear md:flex left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+1rem+2px)]"
-            >
-                <div
-                    data-sidebar="sidebar"
-                    data-slot="sidebar-inner"
-                    class="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
-                >
-                    <!-- Sidebar Header -->
-                    <div class="flex flex-col gap-2 p-2" data-slot="sidebar-header">
-                        <ul class="flex w-full min-w-0 flex-col gap-1" data-slot="sidebar-menu">
-                            <li class="group/menu-item relative" data-slot="sidebar-menu-item">
-                                <a 
-                                    href="{{ route('admin.dashboard') }}"
-                                    class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-1.5 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                    data-slot="sidebar-menu-button"
-                                    data-size="default"
-                                >
-                                    <svg class="size-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                                    </svg>
-                                    <span class="text-base font-semibold group-data-[collapsible=icon]:hidden">StarterKit</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+            <a href="{{ route('admin.dashboard') }}" 
+               class="nav-link group flex items-center gap-3 px-4 py-3 rounded-xl mb-2 font-medium transition-all duration-300 hover:translate-x-1 border border-transparent 
+               {{ request()->routeIs('admin.dashboard') ? 'active bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5 hover:border-black/5 dark:hover:border-white/5' }}">
+                <i data-lucide="home" class="w-5 h-5 {{ request()->routeIs('admin.dashboard') ? 'text-indigo-500 dark:text-indigo-400' : '' }}"></i>
+                <span class="{{ request()->routeIs('admin.dashboard') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }}">Dashboard</span>
+            </a>
 
-                    <!-- Sidebar Content -->
-                    <div class="flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden" data-slot="sidebar-content">
-                        <!-- Quick Create Section -->
-                        <div class="relative flex w-full min-w-0 flex-col p-2" data-slot="sidebar-group">
-                            <div class="w-full text-sm" data-slot="sidebar-group-content">
-                                <ul class="flex w-full min-w-0 flex-col gap-1" data-slot="sidebar-menu">
-                                    <li class="group/menu-item relative flex items-center gap-2" data-slot="sidebar-menu-item">
-                                        <button
-                                            class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                            data-slot="sidebar-menu-button"
-                                        >
-                                            <svg class="size-4 shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
-                                            </svg>
-                                            <span class="group-data-[collapsible=icon]:hidden">Quick Create</span>
-                                        </button>
-                                        <button
-                                            class="size-8 inline-flex items-center justify-center rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 group-data-[collapsible=icon]:opacity-0"
-                                            data-slot="button"
-                                        >
-                                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                            </svg>
-                                            <span class="sr-only">Inbox</span>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+            @if(method_exists(auth()->user(), 'hasPermission') && (auth()->user()->hasPermission('admin.users.index') || auth()->user()->isSuperAdmin()))
+            <a href="{{ route('admin.users.index') }}" 
+               class="nav-link group flex items-center gap-3 px-4 py-3 rounded-xl mb-2 font-medium transition-all duration-300 hover:translate-x-1 border border-transparent
+               {{ request()->routeIs('admin.users.*') ? 'active bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5 hover:border-black/5 dark:hover:border-white/5' }}">
+                <i data-lucide="users" class="w-5 h-5 {{ request()->routeIs('admin.users.*') ? 'text-indigo-500 dark:text-indigo-400' : '' }}"></i>
+                <span class="{{ request()->routeIs('admin.users.*') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }}">Users</span>
+            </a>
+            @endif
 
-                        <!-- Main Navigation -->
-                        <div class="relative flex w-full min-w-0 flex-col p-2" data-slot="sidebar-group">
-                            <div class="w-full text-sm" data-slot="sidebar-group-content">
-                                <ul class="flex w-full min-w-0 flex-col gap-1" data-slot="sidebar-menu">
-                                    @php
-                                        $user = auth()->user();
-                                        $permissions = [];
-                                        if (method_exists($user, 'roles')) {
-                                            foreach ($user->roles as $role) {
-                                                $permissions = array_merge($permissions, $role->permissions->pluck('name')->toArray());
-                                            }
-                                        }
-                                        $permissions = array_unique($permissions);
-                                    @endphp
+            @if(method_exists(auth()->user(), 'hasPermission') && (auth()->user()->hasPermission('admin.roles.index') || auth()->user()->isSuperAdmin()))
+            <a href="{{ route('admin.roles.index') }}" 
+               class="nav-link group flex items-center gap-3 px-4 py-3 rounded-xl mb-2 font-medium transition-all duration-300 hover:translate-x-1 border border-transparent
+               {{ request()->routeIs('admin.roles.*') ? 'active bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5 hover:border-black/5 dark:hover:border-white/5' }}">
+                <i data-lucide="shield" class="w-5 h-5 {{ request()->routeIs('admin.roles.*') ? 'text-indigo-500 dark:text-indigo-400' : '' }}"></i>
+                <span class="{{ request()->routeIs('admin.roles.*') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }}">Roles</span>
+            </a>
+            @endif
 
-                                    <li class="group/menu-item relative" data-slot="sidebar-menu-item">
-                                        <a 
-                                            href="{{ route('admin.dashboard') }}"
-                                            class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 {{ request()->routeIs('admin.dashboard') ? 'bg-black text-white font-medium' : '' }} group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                            data-slot="sidebar-menu-button"
-                                            data-active="{{ request()->routeIs('admin.dashboard') ? 'true' : 'false' }}"
-                                        >
-                                            <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                                            </svg>
-                                            <span class="group-data-[collapsible=icon]:hidden">Dashboard</span>
-                                        </a>
-                                    </li>
-
-                                    @if(method_exists($user, 'hasPermission') && ($user->hasPermission('admin.users.index') || $user->isSuperAdmin()))
-                                    <li class="group/menu-item relative" data-slot="sidebar-menu-item">
-                                        <a 
-                                            href="{{ route('admin.users.index') }}"
-                                            class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 {{ request()->routeIs('admin.users.*') ? 'bg-black text-white font-medium' : '' }} group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                            data-slot="sidebar-menu-button"
-                                            data-active="{{ request()->routeIs('admin.users.*') ? 'true' : 'false' }}"
-                                        >
-                                            <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                                            </svg>
-                                            <span class="group-data-[collapsible=icon]:hidden">Users</span>
-                                        </a>
-                                    </li>
-                                    @endif
-
-                                    @if(method_exists($user, 'hasPermission') && ($user->hasPermission('admin.roles.index') || $user->isSuperAdmin()))
-                                    <li class="group/menu-item relative" data-slot="sidebar-menu-item">
-                                        <a 
-                                            href="{{ route('admin.roles.index') }}"
-                                            class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 {{ request()->routeIs('admin.roles.*') ? 'bg-black text-white font-medium' : '' }} group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                            data-slot="sidebar-menu-button"
-                                            data-active="{{ request()->routeIs('admin.roles.*') ? 'true' : 'false' }}"
-                                        >
-                                            <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h-2A4 4 0 0111 16V8a4 4 0 014-4h2a4 4 0 014 4v8a4 4 0 01-4 4z"></path>
-                                            </svg>
-                                            <span class="group-data-[collapsible=icon]:hidden">Roles</span>
-                                        </a>
-                                    </li>
-                                    @endif
-
-                                    @if(method_exists($user, 'hasPermission') && ($user->hasPermission('admin.permissions.index') || $user->isSuperAdmin()))
-                                    <li class="group/menu-item relative" data-slot="sidebar-menu-item">
-                                        <a 
-                                            href="{{ route('admin.permissions.index') }}"
-                                            class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 {{ request()->routeIs('admin.permissions.*') ? 'bg-black text-white font-medium' : '' }} group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                            data-slot="sidebar-menu-button"
-                                            data-active="{{ request()->routeIs('admin.permissions.*') ? 'true' : 'false' }}"
-                                        >
-                                            <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V9a2 2 0 012-2h2z"></path>
-                                            </svg>
-                                            <span class="group-data-[collapsible=icon]:hidden">Permissions</span>
-                                        </a>
-                                    </li>
-                                    @endif
-
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Secondary Navigation -->
-                        <div class="relative flex w-full min-w-0 flex-col p-2 mt-auto" data-slot="sidebar-group">
-                            <div class="w-full text-sm" data-slot="sidebar-group-content">
-                                <ul class="flex w-full min-w-0 flex-col gap-1" data-slot="sidebar-menu">
-                                    <li class="group/menu-item relative" data-slot="sidebar-menu-item">
-                                        <a 
-                                            href="{{ route('admin.profile.edit') }}"
-                                            class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 {{ request()->routeIs('admin.profile.*') ? 'bg-black text-white font-medium' : '' }} group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                            data-slot="sidebar-menu-button"
-                                        >
-                                            <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                            </svg>
-                                            <span class="group-data-[collapsible=icon]:hidden">Profile</span>
-                                        </a>
-                                    </li>
-                                    <li class="group/menu-item relative" data-slot="sidebar-menu-item">
-                                        <a 
-                                            href="{{ route('admin.settings.index') }}"
-                                            class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 {{ request()->routeIs('admin.settings.*') ? 'bg-black text-white font-medium' : '' }} group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                            data-slot="sidebar-menu-button"
-                                        >
-                                            <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            </svg>
-                                            <span class="group-data-[collapsible=icon]:hidden">Settings</span>
-                                        </a>
-                                    </li>
-                                    <li class="group/menu-item relative" data-slot="sidebar-menu-item">
-                                        <a 
-                                            href="https://github.com/help" 
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                            data-slot="sidebar-menu-button"
-                                        >
-                                            <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                            <span class="group-data-[collapsible=icon]:hidden">Get Help</span>
-                                        </a>
-                                    </li>
-                                    <li class="group/menu-item relative" data-slot="sidebar-menu-item">
-                                        <button
-                                            onclick="document.getElementById('search-modal').classList.remove('hidden')"
-                                            class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                            data-slot="sidebar-menu-button"
-                                        >
-                                            <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                            </svg>
-                                            <span class="group-data-[collapsible=icon]:hidden">Search</span>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sidebar Footer -->
-                    <div class="flex flex-col gap-2 p-2" data-slot="sidebar-footer">
-                        <ul class="flex w-full min-w-0 flex-col gap-1" data-slot="sidebar-menu">
-                            <li class="group/menu-item relative" data-slot="sidebar-menu-item">
-                                <div class="relative">
-                                    <button
-                                        onclick="document.getElementById('user-menu').classList.toggle('hidden')"
-                                        class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-3 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
-                                        data-slot="sidebar-menu-button"
-                                        data-size="lg"
-                                    >
-                                        <div class="h-8 w-8 rounded-lg bg-sidebar-primary flex items-center justify-center text-sidebar-primary-foreground text-sm font-medium shrink-0">
-                                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                                        </div>
-                                        <div class="grid flex-1 text-left text-sm leading-tight min-w-0">
-                                            <span class="truncate font-medium">{{ auth()->user()->name }}</span>
-                                            <span class="text-muted-foreground truncate text-xs">{{ auth()->user()->email }}</span>
-                                        </div>
-                                        <svg class="ml-auto size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                                        </svg>
-                                    </button>
-                                    <div id="user-menu" class="hidden absolute bottom-full left-0 mb-2 w-full bg-popover text-popover-foreground rounded-lg border shadow-md p-1 z-50">
-                                        <a href="{{ route('admin.profile.edit') }}" class="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground">
-                                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                            </svg>
-                                            Account
-                                        </a>
-                                        <a href="{{ route('admin.profile.password.edit') }}" class="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground">
-                                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
-                                            </svg>
-                                            Change Password
-                                        </a>
-                                        <div class="border-t my-1"></div>
-                                        <form method="POST" action="{{ route('logout') }}">
-                                            @csrf
-                                            <button type="submit" class="w-full flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground text-destructive">
-                                                <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                                                </svg>
-                                                Log out
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main 
-            class="bg-background relative flex w-full flex-1 flex-col md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2"
-            data-slot="sidebar-inset"
-        >
-            <!-- Header -->
-            <header class="flex h-12 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12" style="--header-height: 3rem;">
-                <div class="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
-                    <button
-                        class="size-7 inline-flex items-center justify-center rounded-md outline-hidden ring-sidebar-ring transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 -ml-1"
-                        data-sidebar="trigger"
-                        data-slot="sidebar-trigger"
-                    >
-                        <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                        <span class="sr-only">Toggle Sidebar</span>
-                    </button>
-                    <div class="mx-2 h-4 w-px bg-border" data-orientation="vertical"></div>
-                    <h1 class="text-base font-medium">@yield('title', 'Dashboard')</h1>
-                    <div class="ml-auto flex items-center gap-2">
-                        <a 
-                            href="https://github.com" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="inline-flex items-center justify-center rounded-md text-sm font-medium outline-hidden ring-sidebar-ring transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 h-8 px-3 dark:text-foreground"
-                            data-slot="button"
-                        >
-                            GitHub
-                        </a>
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button 
-                                type="submit"
-                                class="inline-flex items-center justify-center rounded-md text-sm font-medium outline-hidden ring-sidebar-ring transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 h-8 px-3"
-                                data-slot="button"
-                            >
-                                Logout
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Page Content -->
-            <div class="flex flex-1 flex-col">
-                <div class="@container/main flex flex-1 flex-col gap-2">
-                    <div class="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-                        @if(session('success'))
-                            <div class="mx-4 lg:mx-6 mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
-                        @if(session('error'))
-                            <div class="mx-4 lg:mx-6 mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-                                {{ session('error') }}
-                            </div>
-                        @endif
-
-                        @yield('content')
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Search Modal -->
-    <div id="search-modal" class="hidden fixed inset-0 z-50 flex items-start justify-center pt-20 bg-black/50" onclick="if(event.target === this) document.getElementById('search-modal').classList.add('hidden')">
-        <div class="bg-background rounded-lg border shadow-lg w-full max-w-2xl mx-4" onclick="event.stopPropagation()">
-            <div class="p-4 border-b">
-                <div class="flex items-center gap-2">
-                    <svg class="size-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                    <input 
-                        type="text" 
-                        placeholder="Search..." 
-                        class="flex-1 outline-none bg-transparent text-base"
-                        autofocus
-                    >
-                    <button 
-                        onclick="document.getElementById('search-modal').classList.add('hidden')"
-                        class="text-muted-foreground hover:text-foreground"
-                    >
-                        <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="p-4">
-                <p class="text-sm text-muted-foreground">Start typing to search...</p>
-            </div>
+            @if(method_exists(auth()->user(), 'hasPermission') && (auth()->user()->hasPermission('admin.permissions.index') || auth()->user()->isSuperAdmin()))
+            <a href="{{ route('admin.permissions.index') }}" 
+               class="nav-link group flex items-center gap-3 px-4 py-3 rounded-xl mb-2 font-medium transition-all duration-300 hover:translate-x-1 border border-transparent
+               {{ request()->routeIs('admin.permissions.*') ? 'active bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5 hover:border-black/5 dark:hover:border-white/5' }}">
+                <i data-lucide="lock" class="w-5 h-5 {{ request()->routeIs('admin.permissions.*') ? 'text-indigo-500 dark:text-indigo-400' : '' }}"></i>
+                <span class="{{ request()->routeIs('admin.permissions.*') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }}">Permissions</span>
+            </a>
+            @endif
         </div>
-    </div>
+
+        <!-- Menu Group 2 -->
+        <div class="mb-8">
+            <div class="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400 font-bold mb-4 pl-3">System</div>
+            
+            <a href="{{ route('admin.settings.index') }}" 
+               class="nav-link group flex items-center gap-3 px-4 py-3 rounded-xl mb-2 font-medium transition-all duration-300 hover:translate-x-1 border border-transparent
+               {{ request()->routeIs('admin.settings.*') ? 'active bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5 hover:border-black/5 dark:hover:border-white/5' }}">
+                <i data-lucide="settings" class="w-5 h-5 {{ request()->routeIs('admin.settings.*') ? 'text-indigo-500 dark:text-indigo-400' : '' }}"></i>
+                <span class="{{ request()->routeIs('admin.settings.*') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }}">Settings</span>
+            </a>
+            
+            <a href="https://github.com/EngOREOO/atomic-starter-kit" target="_blank" class="nav-link group flex items-center gap-3 px-4 py-3 rounded-xl mb-2 text-slate-600 dark:text-slate-400 font-medium transition-all duration-300 hover:translate-x-1 hover:bg-black/5 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white">
+                <i data-lucide="help-circle" class="w-5 h-5"></i>
+                <span>Get Help</span>
+            </a>
+        </div>
+
+        <!-- Profile -->
+        <a href="{{ route('admin.profile.edit') }}" class="mt-auto flex items-center gap-3 p-3 bg-black/5 dark:bg-white/5 border border-transparent dark:border-white/5 rounded-2xl cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
+                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+            </div>
+            <div class="overflow-hidden">
+                <h4 class="text-sm font-bold truncate dark:text-slate-200">{{ auth()->user()->name }}</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ auth()->user()->email }}</p>
+            </div>
+            <i data-lucide="more-vertical" class="w-4 h-4 ml-auto text-slate-400"></i>
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 md:ml-[280px] p-6 w-full transition-all duration-300">
+
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 animate-fade-in">
+            <!-- Breadcrumbs -->
+            <div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
+                <i data-lucide="home" class="w-4 h-4"></i>
+                <span>/</span>
+                <span class="text-slate-900 dark:text-white font-semibold">@yield('title', 'Dashboard')</span>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-4">
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="p-2.5 rounded-xl bg-white/50 dark:bg-slate-800/50 border border-gray-200 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-white dark:hover:bg-slate-700 hover:shadow-[0_0_15px_rgba(129,140,248,0.3)] hover:-translate-y-0.5 transition-all">
+                    <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+                    <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+                </button>
+
+                <a href="https://github.com/EngOREOO/atomic-starter-kit" target="_blank" class="p-2.5 rounded-xl bg-white/50 dark:bg-slate-800/50 border border-gray-200 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-white dark:hover:bg-slate-700 hover:-translate-y-0.5 transition-all flex items-center justify-center">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+                
+                <button class="p-2.5 rounded-xl bg-white/50 dark:bg-slate-800/50 border border-gray-200 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-white dark:hover:bg-slate-700 hover:-translate-y-0.5 transition-all relative">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                </button>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="p-2.5 rounded-xl bg-white/50 dark:bg-slate-800/50 border border-gray-200 dark:border-white/5 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:-translate-y-0.5 transition-all">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <!-- Flash Messages -->
+        @if(session('success'))
+            <div class="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center gap-3">
+                <i data-lucide="check-circle" class="w-5 h-5"></i>
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 flex items-center gap-3">
+                <i data-lucide="alert-circle" class="w-5 h-5"></i>
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- Page Content -->
+        @yield('content')
+        
+    </main>
+
+    <!-- Mobile Menu Button (Floating) -->
+    <button id="mobile-menu-btn" class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-indigo-600 text-white rounded-full shadow-lg shadow-indigo-600/30 flex items-center justify-center z-50 hover:scale-110 transition-transform">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
 
     <script>
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(event) {
-            const userMenu = document.getElementById('user-menu');
-            if (userMenu && !userMenu.contains(event.target) && !event.target.closest('[onclick*="user-menu"]')) {
-                userMenu.classList.add('hidden');
+        // Init Icons
+        lucide.createIcons();
+
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Load saved theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.theme = 'dark';
             }
         });
 
-        // Close search modal on Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                const searchModal = document.getElementById('search-modal');
-                if (searchModal && !searchModal.classList.contains('hidden')) {
-                    searchModal.classList.add('hidden');
-                }
-            }
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            // Change icon
+            const icon = sidebar.classList.contains('-translate-x-full') ? 'menu' : 'x';
+            mobileMenuBtn.innerHTML = `<i data-lucide="${icon}" class="w-6 h-6"></i>`;
+            lucide.createIcons();
         });
 
-        // Sidebar toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebarWrapper = document.querySelector('[data-slot="sidebar-wrapper"]');
-            const sidebarTrigger = document.querySelector('[data-sidebar="trigger"]');
-            const sidebar = document.querySelector('[data-slot="sidebar"]');
-            
-            let isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-            
-            function toggleSidebar() {
-                isCollapsed = !isCollapsed;
-                localStorage.setItem('sidebar-collapsed', isCollapsed);
-                
-                if (isCollapsed) {
-                    sidebar.setAttribute('data-collapsible', 'icon');
-                    sidebar.setAttribute('data-state', 'collapsed');
-                } else {
-                    sidebar.setAttribute('data-collapsible', '');
-                    sidebar.setAttribute('data-state', 'expanded');
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth < 768) {
+                if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                    mobileMenuBtn.innerHTML = `<i data-lucide="menu" class="w-6 h-6"></i>`;
+                    lucide.createIcons();
                 }
-            }
-            
-            if (isCollapsed) {
-                sidebar.setAttribute('data-collapsible', 'icon');
-                sidebar.setAttribute('data-state', 'collapsed');
-            }
-            
-            if (sidebarTrigger) {
-                sidebarTrigger.addEventListener('click', toggleSidebar);
             }
         });
     </script>
