@@ -61,7 +61,7 @@ class UltimateServiceProvider extends ServiceProvider
 
         // Register admin routes
         $this->registerRoutes();
-        
+
         // Register auth routes
         $this->registerAuthRoutes();
 
