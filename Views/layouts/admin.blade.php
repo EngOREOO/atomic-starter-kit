@@ -225,11 +225,11 @@
         const themeToggleBtn = document.getElementById('theme-toggle');
         const htmlElement = document.documentElement;
 
-        // Load saved theme
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            htmlElement.classList.add('dark');
-        } else {
+        // Load saved theme (Default to Dark)
+        if (localStorage.theme === 'light') {
             htmlElement.classList.remove('dark');
+        } else {
+            htmlElement.classList.add('dark');
         }
 
         themeToggleBtn.addEventListener('click', () => {
