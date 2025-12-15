@@ -1,72 +1,84 @@
 @extends('ultimate::layouts.admin')
 
-@section('title', 'Users')
+@section('title', 'User Management')
 
 @section('content')
-<div class="px-4 lg:px-6">
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-semibold">Users</h2>
-        <a 
-            href="{{ route('admin.users.create') }}" 
-            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2"
-            data-slot="button"
-        >
-            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
-            Create User
+<div class="space-y-6 animate-slide-up">
+    <!-- Toolbar -->
+    <div class="flex flex-col md:flex-row justify-between gap-4 bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5">
+        <div class="flex gap-4 flex-1">
+             <div class="relative w-full max-w-md">
+                <input type="text" placeholder="Search users by name, email..." class="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-800 dark:text-slate-200">
+                <i data-lucide="search" class="w-5 h-5 absolute left-3 top-3.5 text-slate-400"></i>
+            </div>
+            <button class="p-3 rounded-xl bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors flex items-center gap-2">
+                <i data-lucide="filter" class="w-5 h-5"></i>
+                <span class="hidden sm:inline">Filter</span>
+            </button>
+        </div>
+
+        <a href="{{ route('admin.users.create') }}" class="px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/30 hover:bg-indigo-700 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+            <i data-lucide="user-plus" class="w-5 h-5"></i>
+            Add User
         </a>
     </div>
 
-    <div class="overflow-hidden rounded-lg border">
-        <div class="relative w-full overflow-x-auto" data-slot="table-container">
-            <table class="w-full caption-bottom text-sm" data-slot="table">
-                <thead class="[&_tr]:border-b bg-muted" data-slot="table-header">
-                    <tr class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors" data-slot="table-row">
-                        <th class="text-foreground h-10 px-4 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-head">Name</th>
-                        <th class="text-foreground h-10 px-4 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-head">Email</th>
-                        <th class="text-foreground h-10 px-4 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-head">Roles</th>
-                        <th class="text-foreground h-10 px-4 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-head">Actions</th>
+    <!-- Users Table Card -->
+    <div class="bg-white/80 dark:bg-slate-800/60 glass rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-gray-200 dark:border-white/5">
+                        <th class="py-4 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">User Details</th>
+                        <th class="py-4 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Role</th>
+                        <th class="py-4 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Status</th>
+                        <th class="py-4 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Joined</th>
+                        <th class="py-4 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="[&_tr:last-child]:border-0" data-slot="table-body">
+                <tbody class="text-sm">
                     @foreach($users as $user)
-                    <tr class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors" data-slot="table-row">
-                        <td class="p-4 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-cell">
-                            <div class="font-medium">{{ $user->name }}</div>
-                        </td>
-                        <td class="p-4 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-cell">
-                            <div class="text-muted-foreground">{{ $user->email }}</div>
-                        </td>
-                        <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-cell">
-                            <div class="flex flex-wrap gap-1">
-                                @forelse($user->roles as $role)
-                                    <span class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0">
-                                        {{ $role->name }}
-                                    </span>
-                                @empty
-                                    <span class="text-muted-foreground text-sm">No Role</span>
-                                @endforelse
+                    <tr class="group hover:bg-indigo-50/50 dark:hover:bg-white/5 transition-colors border-b border-gray-100 dark:border-white/5">
+                        <td class="py-4 px-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden border-2 border-white dark:border-slate-600 flex items-center justify-center font-bold text-slate-500 animate-pulse-glow">
+                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-slate-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{{ $user->name }}</div>
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ $user->email }}</div>
+                                </div>
                             </div>
                         </td>
-                        <td class="p-4 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]" data-slot="table-cell">
-                            <div class="flex items-center gap-2">
-                                <a 
-                                    href="{{ route('admin.users.edit', $user->id) }}" 
-                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 h-8 px-3 text-muted-foreground"
-                                    data-slot="button"
-                                >
-                                    Edit
+                        <td class="py-4 px-4">
+                            @if($user->roles->count() > 0)
+                                @foreach($user->roles as $role)
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/30">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-indigo-500"></div> {{ $role->name }}
+                                </span>
+                                @endforeach
+                            @else
+                                <span class="text-slate-400 text-xs">No Role</span>
+                            @endif
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30">
+                                Active
+                            </span>
+                        </td>
+                        <td class="py-4 px-4 text-slate-500 dark:text-slate-400">
+                            {{ $user->created_at->diffForHumans() }}
+                        </td>
+                        <td class="py-4 px-4 text-right">
+                            <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <a href="{{ route('admin.users.edit', $user) }}" class="p-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-500/20 text-slate-400 hover:text-indigo-600 transition-colors" title="Edit">
+                                    <i data-lucide="edit-3" class="w-4 h-4"></i>
                                 </a>
-                                <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" class="inline" onsubmit="return confirm('Are you sure you want to delete this user?')">
+                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('Are you sure?');" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button 
-                                        type="submit" 
-                                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 h-8 px-3 text-destructive"
-                                        data-slot="button"
-                                    >
-                                        Delete
+                                    <button type="submit" class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/20 text-slate-400 hover:text-red-600 transition-colors" title="Delete">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
                                 </form>
                             </div>
@@ -76,44 +88,10 @@
                 </tbody>
             </table>
         </div>
-        
-        <div class="flex items-center justify-between px-4 py-4">
-            <div class="text-muted-foreground hidden flex-1 text-sm lg:flex">
-                Showing {{ $users->firstItem() ?? 0 }} to {{ $users->lastItem() ?? 0 }} of {{ $users->total() }} results
-            </div>
-            <div class="flex w-full items-center gap-8 lg:w-fit">
-                <div class="flex w-fit items-center justify-center text-sm font-medium">
-                    Page {{ $users->currentPage() }} of {{ $users->lastPage() }}
-                </div>
-                <div class="ml-auto flex items-center gap-2 lg:ml-0">
-                    @if($users->onFirstPage())
-                        <button class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 p-0 transition-colors disabled:pointer-events-none disabled:opacity-50" disabled data-slot="button">
-                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                        </button>
-                    @else
-                        <a href="{{ $users->previousPageUrl() }}" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 p-0 transition-colors" data-slot="button">
-                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                        </a>
-                    @endif
-                    @if($users->hasMorePages())
-                        <a href="{{ $users->nextPageUrl() }}" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 p-0 transition-colors" data-slot="button">
-                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
-                    @else
-                        <button class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 p-0 transition-colors disabled:pointer-events-none disabled:opacity-50" disabled data-slot="button">
-                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </button>
-                    @endif
-                </div>
-            </div>
+
+        <!-- Pagination -->
+        <div class="mt-6">
+            {{ $users->links() }}
         </div>
     </div>
 </div>
