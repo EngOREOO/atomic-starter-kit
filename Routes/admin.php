@@ -20,14 +20,16 @@ Route::prefix('profile')->name('profile.')->group(function () {
 });
 
 // Users
+Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
 Route::resource('users', UserController::class)->names([
     'index' => 'users.index',
     'create' => 'users.create',
     'store' => 'users.store',
     'edit' => 'users.edit',
-    'update' => 'users.update',
+    'update' => 'users.update', // This handles PUT/PATCH
     'destroy' => 'users.destroy',
 ]);
+Route::post('users/{user}', [UserController::class, 'update']); // Fallback for POST without _method
 
 // Roles
 Route::resource('roles', RoleController::class)->names([
