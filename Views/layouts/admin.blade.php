@@ -13,8 +13,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     <script>
-        // Tailwind Config for colors/fonts if not in tailwind.config.js yet 
-        // (Ideally this should move to tailwind.config.js, but keeping here for now as requested)
         tailwind = {
             config: {
                 darkMode: 'class',
@@ -137,7 +135,7 @@
                 <span class="{{ request()->routeIs('admin.settings.*') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }}">Settings</span>
             </a>
             
-            <a href="https://github.com/EngOREOO/atomic-starter-kit" target="_blank" class="nav-link group flex items-center gap-3 px-4 py-3 rounded-xl mb-2 text-slate-600 dark:text-slate-400 font-medium transition-all duration-300 hover:translate-x-1 hover:bg-black/5 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white">
+            <a href="https://github.com" target="_blank" class="nav-link group flex items-center gap-3 px-4 py-3 rounded-xl mb-2 text-slate-600 dark:text-slate-400 font-medium transition-all duration-300 hover:translate-x-1 hover:bg-black/5 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white">
                 <i data-lucide="help-circle" class="w-5 h-5"></i>
                 <span>Get Help</span>
             </a>
