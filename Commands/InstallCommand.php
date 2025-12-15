@@ -118,6 +118,15 @@ class InstallCommand extends Command
         $this->info('✅ Super Admin user created.');
         $this->newLine();
 
+        // Run Setting Seeder
+        $this->info('Seeding default settings...');
+        Artisan::call('db:seed', [
+            '--class' => 'Vendor\\UltimateStarterKit\\Database\\Seeders\\SettingSeeder',
+            '--force' => true
+        ]);
+        $this->info('✅ Default settings seeded.');
+        $this->newLine();
+
         // Update Tailwind config
         $this->updateTailwindConfig();
 
